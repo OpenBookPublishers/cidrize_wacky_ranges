@@ -229,12 +229,6 @@ def process(sheet): # process each row
 
     print "There are %d bad ips need fixing." %(len(badones));
 
-
-
-
-
-
-
 '''
 # Preprocessing
 def run():
