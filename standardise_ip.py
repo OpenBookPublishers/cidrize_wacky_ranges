@@ -219,7 +219,7 @@ def process(sheet): # process each row
         if(sheet.cell(column = 1, row = i).value) is not None:
             rawvalue = sheet.cell(column=1, row=i).value
             cidrized = screen(rawvalue)
-            print "Processed row %d" %(i)
+            print >> sys.stderr, "Processed row %d" %(i)
             sheet.cell(column =2, row=i).value = str(cidrized)
             goodones.append(cidrized)
 
