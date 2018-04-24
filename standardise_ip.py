@@ -130,6 +130,10 @@ def two_brackets(ip_result):
 
     return iprange_to_cidrs(startip, endip)
 
+def handle_hyphenated_range(ip_result):
+    startip, endip = ip_result.split("-")
+    return iprange_to_cidrs(startip, endip)
+
 class CategorisationError(Exception):
     pass
 
@@ -142,9 +146,7 @@ def categorise(ip): # categorise individual ips
 
     matched = re.search(pat_hyphen, ip)
     if matched is not None:
-        result = matched.group(0)
-        startip, endip = result.split("-")
-        return iprange_to_cidrs(startip, endip)
+        return handle_hyphenated_range(matched.group(0))
 
     matched = re.search(pat_bracket, ip)
     if matched is not None:
