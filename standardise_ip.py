@@ -229,7 +229,13 @@ def process(sheet): # process each row
 
     print "There are %d bad ips need fixing." %(len(badones));
 
-'''
+
+def alternate_way_of_running():
+    wb = load_workbook("ip-ranges.xlsx");
+    sheet = wb.get_sheet_by_name("Sheet1");
+    process(sheet);
+    wb.save("ip-ranges-edited.xlsx")
+
 # Preprocessing
 def run():
     _,inputf,outputf = sys.argv
@@ -237,11 +243,5 @@ def run():
     sheet = wb["Sheet1"];
     process(sheet);
 
-
 if __name__ == "__main__":
     run();
-'''
-wb = load_workbook("ip-ranges.xlsx");
-sheet = wb.get_sheet_by_name("Sheet1");
-process(sheet);
-wb.save("ip-ranges-edited.xlsx")
