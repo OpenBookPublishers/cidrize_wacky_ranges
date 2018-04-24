@@ -147,10 +147,7 @@ def categorise(ip): # categorise individual ips
     matched = re.search(pat_hyphen, ip)
     if matched is not None:
         result = matched.group(0)
-        ip_split = result.split("-")
-        assert 2 == len(ip_split)
-        startip = ip_split[0]
-        endip = ip_split[1]
+        startip, endip = result.split("-")
         return iprange_to_cidrs(startip, endip)
 
     matched = re.search(pat_bracket, ip)
