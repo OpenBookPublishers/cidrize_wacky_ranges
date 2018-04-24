@@ -132,6 +132,11 @@ def two_brackets(ip_result):
 
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
+
+    def cidrize_whole_match(pattern):
+        ip_result = re.search(pattern, ip).group(0)
+        return cidrize(ip_result)
+
     if re.search(pat_privateip, ip) is not None:
         return []
 
@@ -143,8 +148,7 @@ def categorise(ip): # categorise individual ips
         return iprange_to_cidrs(startip, endip)
 
     elif re.search(pat_bracket, ip) is not None:
-        ip_result = re.search(pat_bracket, ip).group(0)
-        return cidrize(ip_result)
+        return cidrize_whole_match(pat_bracket)
 
     elif re.search(pat_thirdoctet_wildcard, ip) is not None:
         ip_result = re.search(pat_thirdoctet_wildcard, ip).group(0)
@@ -155,27 +159,22 @@ def categorise(ip): # categorise individual ips
         return thirdoctet(ip_result)
 
     elif re.search(pat_wildcard, ip) is not None:
-        ip_result = re.search(pat_wildcard, ip).group(0)
-        return cidrize(ip_result)
+        return cidrize_whole_match(pat_wildcard)
 
     elif re.search(pat_two_brackets, ip) is not None:
         return two_brackets(re.search(pat_two_brackets, ip).group(0))
 
     elif re.search(pat_fourthoctet, ip) is not None:
-        ip_result = re.search(pat_fourthoctet, ip).group(0)
-        return cidrize(ip_result)
+        return cidrize_whole_match(pat_fourthoctet)
 
     elif re.search(pat_squarebrackets, ip) is not None:
-        ip_result = re.search(pat_squarebrackets, ip).group(0)
-        return cidrize(ip_result)
+        return cidrize_whole_match(pat_squarebrackets)
 
     elif re.search(pat_squarebrackets_fourth, ip) is not None:
-        ip_result = re.search(pat_squarebrackets_fourth, ip).group(0)
-        return cidrize(ip_result)
+        return cidrize_whole_match(pat_squarebrackets_fourth)
 
     elif re.search(pat_simple, ip) is not None:
-        ip_result = re.search(pat_simple, ip).group(0)
-        return cidrize(ip_result)
+        return cidrize_whole_match(pat_simple)
 
     else:
         # doesn't fit into any defined form. Must be a typo somewhere.
