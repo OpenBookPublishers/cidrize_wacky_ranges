@@ -30,40 +30,40 @@ goodones = []; # Just for record purposes
 # Patterns
 
 # 192.168.*.*
-pat_privateip = re.compile("192\.168\..*\..*"); 
+pat_privateip = re.compile("192\.168\..*\..*");
 
 # match xx.xxx.xxx.xx-xx.xxx.xx.xx
-pat_hyphen = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"); 
+pat_hyphen = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
 
 # (xx.xx.xx.xx/xx)
-pat_bracket = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/\d{1,2}"); 
+pat_bracket = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/\d{1,2}");
 
 # xx.xxx.xx.*
-pat_wildcard = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\*"); 
+pat_wildcard = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\*");
 
 # xx.xxx.xx-xx.*
-pat_thirdoctet_wildcard = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}\.\*"); 
+pat_thirdoctet_wildcard = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}\.\*");
 
 # xx.xxx.xx-xx.xx
-pat_thirdoctet = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}\.\d{1,3}"); 
+pat_thirdoctet = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}\.\d{1,3}");
 
 # EZProxyIP123.405.2.3
-pat_words = re.compile("[^0-9.-/*]"); 
+pat_words = re.compile("[^0-9.-/*]");
 
 # xx.xxx.(xx-xx).(xx-xx)
-pat_two_brackets = re.compile("\d{1,3}\.\d{1,3}\.\(\d{1,3}-\d{1,3}\)\.\(\d{1,3}-\d{1,3}\)") 
+pat_two_brackets = re.compile("\d{1,3}\.\d{1,3}\.\(\d{1,3}-\d{1,3}\)\.\(\d{1,3}-\d{1,3}\)")
 
 # xx.xxx.xx.xx
-pat_simple = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}") 
+pat_simple = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
 
 # xx.xxx.xx.xx-xxx
-pat_fourthoctet = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}") 
+pat_fourthoctet = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}")
 
 # xx.xxx.xxx.x[0-255]
-pat_squarebrackets = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1}\[\d{1,3}-\d{1,3}\]"); 
+pat_squarebrackets = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1}\[\d{1,3}-\d{1,3}\]");
 
 # xx.xxx.xxx.[xxxx]
-pat_squarebrackets_fourth = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\[\d{1,4}]"); 
+pat_squarebrackets_fourth = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\[\d{1,4}]");
 
 
 
