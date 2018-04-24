@@ -167,7 +167,11 @@ def categorise(ip): # categorise individual ips
 def screen(rawvalue): # digest the rawvalue of row
 
     rawvalue = replace_all(rawvalue,reps)
-    ss = [x.strip() for x in re.split('[,;&]',rawvalue)]; # Remove whitespace and produce an array of (hopefully) readable IP Addresses.
+
+    # Remove whitespace and produce an array of (hopefully) readable
+    # IP Addresses.
+    ss = [x.strip() for x in re.split('[,;&]',rawvalue)]
+
     cidrizedarray = []
     for ip in ss:
         if ip is None or ip is u'':
