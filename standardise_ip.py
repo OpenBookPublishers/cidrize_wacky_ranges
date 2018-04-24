@@ -44,9 +44,9 @@ pat_squarebrackets_fourth = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\[\d{1,4}]");
 
 
 # Dictionary of stuff to replace. For standardising.
-def replace_all(text,dic):
-    for i,j in dic.iteritems():
-        text = text.replace(i,j)
+def replace_all(text, dic):
+    for i, j in dic.iteritems():
+        text = text.replace(i, j)
     return text
 
 reps = {
@@ -70,10 +70,10 @@ reps = {
 }
 
 def thirdoctet(ip_result):
-    prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"),ip_result).group(0)
+    prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"), ip_result).group(0)
     suffix = re.split(re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}"),
                       ip_result)[1]
-    ip_range = re.search(re.compile("\d{1,3}-\d{1,3}"),ip_result).group(0)
+    ip_range = re.search(re.compile("\d{1,3}-\d{1,3}"), ip_result).group(0)
     first = ip_range.split("-")[0]
     second = ip_range.split("-")[1]
 
@@ -84,13 +84,13 @@ def thirdoctet(ip_result):
         startip = prefix + "." + first  + suffix
         endip = prefix + "." + second  + suffix
 
-    result_list = iprange_to_cidrs(startip,endip)
+    result_list = iprange_to_cidrs(startip, endip)
     return result_list
 
 def two_brackets(ip_result):
-    prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"),ip_result).group(0)
-    third_octet = re.findall("\d{1,3}-\d{1,3}",ip_result)[0]
-    fourth_octet = re.findall("\d{1,3}-\d{1,3}",ip_result)[1]
+    prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"), ip_result).group(0)
+    third_octet = re.findall("\d{1,3}-\d{1,3}", ip_result)[0]
+    fourth_octet = re.findall("\d{1,3}-\d{1,3}", ip_result)[1]
 
     third_octet_first = third_octet.split("-")[0]
     third_octet_second = third_octet.split("-")[1]
@@ -102,62 +102,62 @@ def two_brackets(ip_result):
     startip = prefix + "." + third_octet_first + "." + fourth_octet_first
     endip = prefix + "." + third_octet_second + "." + fourth_octet_second
 
-    result_list = iprange_to_cidrs(startip,endip)
+    result_list = iprange_to_cidrs(startip, endip)
     return result_list
 
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
-    if re.search(pat_privateip,ip) is not None:
+    if re.search(pat_privateip, ip) is not None:
         return None
 
-    if re.search(pat_hyphen,ip) is not None:
-        result = re.search(pat_hyphen,ip).group(0)
+    if re.search(pat_hyphen, ip) is not None:
+        result = re.search(pat_hyphen, ip).group(0)
         ip_split = result.split("-")
         startip = ip_split[0]
         endip = ip_split[1]
-        cidrizedarray = iprange_to_cidrs(startip,endip)
+        cidrizedarray = iprange_to_cidrs(startip, endip)
         return cidrizedarray
 
-    elif re.search(pat_bracket,ip) is not None:
-        ip_result = re.search(pat_bracket,ip).group(0)
+    elif re.search(pat_bracket, ip) is not None:
+        ip_result = re.search(pat_bracket, ip).group(0)
         return cidrize(ip_result)
 
-    elif re.search(pat_thirdoctet_wildcard,ip) is not None:
-        ip_result = re.search(pat_thirdoctet_wildcard,ip).group(0)
+    elif re.search(pat_thirdoctet_wildcard, ip) is not None:
+        ip_result = re.search(pat_thirdoctet_wildcard, ip).group(0)
         cidrizedarray = thirdoctet(ip_result)
         return cidrizedarray
 
-    elif re.search(pat_thirdoctet,ip) is not None:
-        ip_result = re.search(pat_thirdoctet,ip).group(0)
+    elif re.search(pat_thirdoctet, ip) is not None:
+        ip_result = re.search(pat_thirdoctet, ip).group(0)
         cidrizedarray = thirdoctet(ip_result)
         return cidrizedarray
 
-    elif re.search(pat_wildcard,ip) is not None:
-        ip_result = re.search(pat_wildcard,ip).group(0)
+    elif re.search(pat_wildcard, ip) is not None:
+        ip_result = re.search(pat_wildcard, ip).group(0)
         cidrizedarray = cidrize(ip_result)
         return cidrizedarray
 
-    elif re.search(pat_two_brackets,ip) is not None:
-        cidrizedarray = two_brackets(re.search(pat_two_brackets,ip).group(0))
+    elif re.search(pat_two_brackets, ip) is not None:
+        cidrizedarray = two_brackets(re.search(pat_two_brackets, ip).group(0))
         return cidrizedarray
 
-    elif re.search(pat_fourthoctet,ip) is not None:
-        ip_result = re.search(pat_fourthoctet,ip).group(0)
+    elif re.search(pat_fourthoctet, ip) is not None:
+        ip_result = re.search(pat_fourthoctet, ip).group(0)
         cidrizedarray = cidrize(ip_result)
         return cidrizedarray
 
-    elif re.search(pat_squarebrackets,ip) is not None:
-        ip_result = re.search(pat_squarebrackets,ip).group(0)
+    elif re.search(pat_squarebrackets, ip) is not None:
+        ip_result = re.search(pat_squarebrackets, ip).group(0)
         cidrizedarray = cidrize(ip_result)
         return cidrizedarray
 
-    elif re.search(pat_squarebrackets_fourth,ip) is not None:
-        ip_result = re.search(pat_squarebrackets_fourth,ip).group(0)
+    elif re.search(pat_squarebrackets_fourth, ip) is not None:
+        ip_result = re.search(pat_squarebrackets_fourth, ip).group(0)
         cidrizedarray = cidrize(ip_result)
         return cidrizedarray
 
-    elif re.search(pat_simple,ip) is not None:
-        ip_result = re.search(pat_simple,ip).group(0)
+    elif re.search(pat_simple, ip) is not None:
+        ip_result = re.search(pat_simple, ip).group(0)
         cidrizedarray = cidrize(ip_result)
         return cidrizedarray
 
@@ -167,11 +167,11 @@ def categorise(ip): # categorise individual ips
 
 def screen(rawvalue): # digest the rawvalue of row
 
-    rawvalue = replace_all(rawvalue,reps)
+    rawvalue = replace_all(rawvalue, reps)
 
     # Remove whitespace and produce an array of (hopefully) readable
     # IP Addresses.
-    ss = [x.strip() for x in re.split('[,;&]',rawvalue)]
+    ss = [x.strip() for x in re.split('[,;&]', rawvalue)]
 
     cidrizedarray = []
     for ip in ss:
@@ -198,12 +198,12 @@ def screen(rawvalue): # digest the rawvalue of row
     return cidrizedarray
 
 def process(sheet): # process each row
-    for i in range(1,sheet.max_row+1):
-        if(sheet.cell(column = 1,row = i).value) is not None:
-            rawvalue = sheet.cell(column=1,row=i).value
+    for i in range(1, sheet.max_row+1):
+        if(sheet.cell(column = 1, row = i).value) is not None:
+            rawvalue = sheet.cell(column=1, row=i).value
             cidrized = screen(rawvalue)
             print "Processed row %d" %(i)
-            sheet.cell(column =2,row=i).value = str(cidrized)
+            sheet.cell(column =2, row=i).value = str(cidrized)
             goodones.append(cidrized)
 
     for ip in badones:
