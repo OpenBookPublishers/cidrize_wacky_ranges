@@ -136,11 +136,12 @@ class CategorisationError(Exception):
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
 
-    def cidrize_whole_match(pattern):
-        ip_result = re.search(pattern, ip).group(0)
+    def cidrize_whole_match(matched, pattern):
+        ip_result = matched.group(0)
         return cidrize(ip_result)
 
-    if re.search(pat_privateip, ip) is not None:
+    matched = re.search(pat_privateip, ip)
+    if matched is not None:
         return []
 
     matched = re.search(pat_hyphen, ip)
@@ -153,7 +154,7 @@ def categorise(ip): # categorise individual ips
 
     matched = re.search(pat_bracket, ip)
     if matched is not None:
-        return cidrize_whole_match(pat_bracket)
+        return cidrize_whole_match(matched, pat_bracket)
 
     matched = re.search(pat_thirdoctet_wildcard, ip)
     if matched is not None:
@@ -167,7 +168,7 @@ def categorise(ip): # categorise individual ips
 
     matched = re.search(pat_wildcard, ip)
     if matched is not None:
-        return cidrize_whole_match(pat_wildcard)
+        return cidrize_whole_match(matched, pat_wildcard)
 
     matched = re.search(pat_two_brackets, ip)
     if matched is not None:
@@ -175,19 +176,19 @@ def categorise(ip): # categorise individual ips
 
     matched = re.search(pat_fourthoctet, ip)
     if matched is not None:
-        return cidrize_whole_match(pat_fourthoctet)
+        return cidrize_whole_match(matched, pat_fourthoctet)
 
     matched = re.search(pat_squarebrackets, ip)
     if matched is not None:
-        return cidrize_whole_match(pat_squarebrackets)
+        return cidrize_whole_match(matched, pat_squarebrackets)
 
     matched = re.search(pat_squarebrackets_fourth, ip)
     if matched is not None:
-        return cidrize_whole_match(pat_squarebrackets_fourth)
+        return cidrize_whole_match(matched, pat_squarebrackets_fourth)
 
     matched = re.search(pat_simple, ip)
     if matched is not None:
-        return cidrize_whole_match(pat_simple)
+        return cidrize_whole_match(matched, pat_simple)
 
     else:
         # doesn't fit into any defined form. Must be a typo somewhere.
