@@ -178,15 +178,15 @@ def screen(rawvalue): # digest the rawvalue of row
             if cidrizedip == "fail":
                 badones.append(ip)
 
-        if type(cidrizedip) == list:
-            for i in cidrizedip:
-                if i == None or i is u'':
-                    continue
-                cidrizedarray.append(i)
-        elif cidrizedip == None or cidrizedip is u'' :
-            continue
-        else:
-            cidrizedarray.append(cidrizedip)
+            if type(cidrizedip) == list:
+                for i in cidrizedip:
+                    if i == None or i is u'':
+                        continue
+                    cidrizedarray.append(i)
+            elif cidrizedip == None or cidrizedip is u'' :
+                continue
+            else:
+                cidrizedarray.append(cidrizedip)
         except CidrizeError as e:
             # failsafe
             badones.append(ip)
