@@ -198,6 +198,7 @@ def screen(rawvalue):
             cidrizedip = categorise(ip)
             if cidrizedip == "fail":
                 badones.append(ip)
+                continue
 
             if type(cidrizedip) == list:
                 for i in cidrizedip:
