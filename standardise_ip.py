@@ -72,7 +72,8 @@ reps = {
 
 def thirdoctet(ip_result):
     prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"),ip_result).group(0)
-    suffix = re.split(re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}"),ip_result)[1]
+    suffix = re.split(re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}"),
+                      ip_result)[1]
     ip_range = re.search(re.compile("\d{1,3}-\d{1,3}"),ip_result).group(0)
     first = ip_range.split("-")[0]
     second = ip_range.split("-")[1]
