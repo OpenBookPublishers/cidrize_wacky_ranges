@@ -136,10 +136,6 @@ class CategorisationError(Exception):
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
 
-    def cidrize_whole_match(matched):
-        ip_result = matched.group(0)
-        return cidrize(ip_result)
-
     matched = re.search(pat_privateip, ip)
     if matched is not None:
         return []
@@ -152,7 +148,7 @@ def categorise(ip): # categorise individual ips
 
     matched = re.search(pat_bracket, ip)
     if matched is not None:
-        return cidrize_whole_match(matched)
+        return cidrize(matched.group(0))
 
     matched = re.search(pat_thirdoctet_wildcard, ip)
     if matched is not None:
@@ -166,7 +162,7 @@ def categorise(ip): # categorise individual ips
 
     matched = re.search(pat_wildcard, ip)
     if matched is not None:
-        return cidrize_whole_match(matched)
+        return cidrize(matched.group(0))
 
     matched = re.search(pat_two_brackets, ip)
     if matched is not None:
@@ -174,19 +170,19 @@ def categorise(ip): # categorise individual ips
 
     matched = re.search(pat_fourthoctet, ip)
     if matched is not None:
-        return cidrize_whole_match(matched)
+        return cidrize(matched.group(0))
 
     matched = re.search(pat_squarebrackets, ip)
     if matched is not None:
-        return cidrize_whole_match(matched)
+        return cidrize(matched.group(0))
 
     matched = re.search(pat_squarebrackets_fourth, ip)
     if matched is not None:
-        return cidrize_whole_match(matched)
+        return cidrize(matched.group(0))
 
     matched = re.search(pat_simple, ip)
     if matched is not None:
-        return cidrize_whole_match(matched)
+        return cidrize(matched.group(0))
 
     else:
         # doesn't fit into any defined form. Must be a typo somewhere.
