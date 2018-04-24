@@ -46,28 +46,29 @@ pat_squarebrackets_fourth = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\[\d{1,4}]");
 # Dictionary of stuff to replace. For standardising.
 def replace_all(text,dic):
     for i,j in dic.iteritems():
+        print type(text), repr(text)
         text = text.replace(i,j)
     return text
 
-reps = {"to":"-","and":"&", \
-        u"\u002D":"-", \
-        u"\u058A":"-", \
-        u"\u05BE":"-", \
-        u"\u1400":"-", \
-        u"\u1806":"-", \
-        u"\u2011":"-", \
-        u"\u2012":"-", \
-        u"\u2013":"-", \
-        u"\u2014":"-", \
-        u"\u2015":"-", \
-        u"\u2E3A":"-", \
-        u"\u2E3B":"-", \
-        u"\uFE58":"-", \
-        u"\uFE63":"-", \
-        u"\uFF0D":"-", \
-
-        }
-
+reps = {
+    "to": "-",
+    "and": "&",
+    u"\u002D": "-",
+    u"\u058A": "-",
+    u"\u05BE": "-",
+    u"\u1400": "-",
+    u"\u1806": "-",
+    u"\u2011": "-",
+    u"\u2012": "-",
+    u"\u2013": "-",
+    u"\u2014": "-",
+    u"\u2015": "-",
+    u"\u2E3A": "-",
+    u"\u2E3B": "-",
+    u"\uFE58": "-",
+    u"\uFE63": "-",
+    u"\uFF0D": "-",
+}
 
 def thirdoctet(ip_result):
     prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"),ip_result).group(0)
