@@ -134,6 +134,9 @@ def handle_hyphenated_range(ip_result):
     startip, endip = ip_result.split("-")
     return iprange_to_cidrs(startip, endip)
 
+def empty_list(anything):
+    return []
+
 class CategorisationError(Exception):
     pass
 
@@ -142,7 +145,7 @@ def categorise(ip): # categorise individual ips
 
     matched = re.search(pat_privateip, ip)
     if matched is not None:
-        return []
+        return empty_list(matched.group())
 
     matched = re.search(pat_hyphen, ip)
     if matched is not None:
