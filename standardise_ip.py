@@ -124,7 +124,6 @@ def two_brackets(ip_result):
     fourth_octet_first = fourth_octet.split("-")[0]
     fourth_octet_second = fourth_octet.split("-")[1]
 
-
     startip = prefix + "." + third_octet_first + "." + fourth_octet_first
     endip = prefix + "." + third_octet_second + "." + fourth_octet_second
 
