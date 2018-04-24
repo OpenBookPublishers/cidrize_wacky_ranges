@@ -111,7 +111,7 @@ def categorise(ip): # categorise individual ips
                 startip = ip_split[0]
                 endip = ip_split[1]
                 cidrizedarray = iprange_to_cidrs(startip,endip)
-            return cidrizedarray
+                return cidrizedarray
 
             elif re.search(pat_bracket,ip) is not None:
                 ip_result = re.search(pat_bracket,ip).group(0)
