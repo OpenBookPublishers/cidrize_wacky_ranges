@@ -167,7 +167,9 @@ def categorise(ip): # categorise individual ips
         # doesn't fit into any defined form. Must be a typo somewhere.
         return "fail"
 
-def screen(rawvalue): # digest the rawvalue of row
+def screen(rawvalue):
+    """Digest the rawvalue of row."""
+
     if(type(rawvalue)) == type(1L):
         rawvalue = replace_all(unicode(rawvalue), reps)
     else:
