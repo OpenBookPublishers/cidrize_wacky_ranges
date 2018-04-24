@@ -20,6 +20,8 @@ from cidrize import cidrize,CidrizeError
 from netaddr import *
 from openpyxl import load_workbook
 import re
+import sys
+
 # Global variables
 badones =[]; # Weeding out the bad IP addresses
 goodones = []; # Just for record purposes
