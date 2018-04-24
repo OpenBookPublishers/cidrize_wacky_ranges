@@ -46,7 +46,6 @@ pat_squarebrackets_fourth = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\[\d{1,4}]");
 # Dictionary of stuff to replace. For standardising.
 def replace_all(text,dic):
     for i,j in dic.iteritems():
-        print type(text), repr(text)
         text = text.replace(i,j)
     return text
 
