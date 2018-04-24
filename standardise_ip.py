@@ -170,8 +170,18 @@ def categorise(ip): # categorise individual ips
 def screen(rawvalue):
     """Digest the rawvalue of row."""
 
+    def add_dots(s):
+        """We are assuming that the input is of the form X,YYY,ZZZ,AAA
+           i.e., that the last three bytes are groups of *three* digits
+           separated by commas.  If they weren't, they would probably not
+           have been misinterpreted as numbers in the first place by Excel."""
+        assert s >= 1000000000
+        units = [1000000000, 1000000, 1000, 1]
+        my_divide = lambda unit : s / unit % 1000
+        return u".".join(map(str, map(my_divide, units)))
+
     if(type(rawvalue)) == type(1L):
-        rawvalue = replace_all(unicode(rawvalue), reps)
+        rawvalue = replace_all(add_dots(rawvalue), reps)
     else:
         rawvalue = replace_all(rawvalue, reps)
 
