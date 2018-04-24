@@ -143,53 +143,27 @@ class CategorisationError(Exception):
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
 
-    matched = re.search(pat_privateip, ip)
-    if matched is not None:
-        return empty_list(matched.group())
+    pattern_handlers = [
+        (pat_privateip, empty_list),
+        (pat_hyphen, handle_hyphenated_range),
+        (pat_bracket, cidrize),
+        (pat_thirdoctet_wildcard, thirdoctet),
+        (pat_thirdoctet, thirdoctet),
+        (pat_wildcard, cidrize),
+        (pat_two_brackets, two_brackets),
+        (pat_fourthoctet, cidrize),
+        (pat_squarebrackets, cidrize),
+        (pat_squarebrackets_fourth, cidrize),
+        (pat_simple, cidrize)
+    ]
 
-    matched = re.search(pat_hyphen, ip)
-    if matched is not None:
-        return handle_hyphenated_range(matched.group(0))
+    for pattern, handler in pattern_handlers:
+        matched = re.search(pattern, ip)
+        if matched is not None:
+            return handler(matched.group(0))
 
-    matched = re.search(pat_bracket, ip)
-    if matched is not None:
-        return cidrize(matched.group(0))
-
-    matched = re.search(pat_thirdoctet_wildcard, ip)
-    if matched is not None:
-        return thirdoctet(matched.group(0))
-
-    matched = re.search(pat_thirdoctet, ip)
-    if matched is not None:
-        return thirdoctet(matched.group(0))
-
-    matched = re.search(pat_wildcard, ip)
-    if matched is not None:
-        return cidrize(matched.group(0))
-
-    matched = re.search(pat_two_brackets, ip)
-    if matched is not None:
-        return two_brackets(matched.group(0))
-
-    matched = re.search(pat_fourthoctet, ip)
-    if matched is not None:
-        return cidrize(matched.group(0))
-
-    matched = re.search(pat_squarebrackets, ip)
-    if matched is not None:
-        return cidrize(matched.group(0))
-
-    matched = re.search(pat_squarebrackets_fourth, ip)
-    if matched is not None:
-        return cidrize(matched.group(0))
-
-    matched = re.search(pat_simple, ip)
-    if matched is not None:
-        return cidrize(matched.group(0))
-
-    else:
-        # doesn't fit into any defined form. Must be a typo somewhere.
-        raise CategorisationError
+    # doesn't fit into any defined form. Must be a typo somewhere.
+    raise CategorisationError
 
 def screen(rawvalue):
     """Digest the rawvalue of row."""
