@@ -148,6 +148,7 @@ def categorise(ip): # categorise individual ips
     if matched is not None:
         result = matched.group(0)
         ip_split = result.split("-")
+        assert 2 == len(ip_split)
         startip = ip_split[0]
         endip = ip_split[1]
         return iprange_to_cidrs(startip, endip)
