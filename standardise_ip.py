@@ -152,13 +152,11 @@ def categorise(ip): # categorise individual ips
 
     matched = re.search(pat_thirdoctet_wildcard, ip)
     if matched is not None:
-        ip_result = matched.group(0)
-        return thirdoctet(ip_result)
+        return thirdoctet(matched.group(0))
 
     matched = re.search(pat_thirdoctet, ip)
     if matched is not None:
-        ip_result = matched.group(0)
-        return thirdoctet(ip_result)
+        return thirdoctet(matched.group(0))
 
     matched = re.search(pat_wildcard, ip)
     if matched is not None:
