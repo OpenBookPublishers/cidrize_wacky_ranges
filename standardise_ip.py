@@ -102,66 +102,66 @@ def two_brackets(ip_result):
 
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
-    if re.search(pat_privateip,ip) is None:
-        try:
+    if re.search(pat_privateip,ip) is not None:
+        return None
 
-            if re.search(pat_hyphen,ip) is not None:
-                result = re.search(pat_hyphen,ip).group(0)
-                ip_split = result.split("-")
-                startip = ip_split[0]
-                endip = ip_split[1]
-                cidrizedarray = iprange_to_cidrs(startip,endip)
-                return cidrizedarray
+    try:
+        if re.search(pat_hyphen,ip) is not None:
+            result = re.search(pat_hyphen,ip).group(0)
+            ip_split = result.split("-")
+            startip = ip_split[0]
+            endip = ip_split[1]
+            cidrizedarray = iprange_to_cidrs(startip,endip)
+            return cidrizedarray
 
-            elif re.search(pat_bracket,ip) is not None:
-                ip_result = re.search(pat_bracket,ip).group(0)
-                return cidrize(ip_result)
+        elif re.search(pat_bracket,ip) is not None:
+            ip_result = re.search(pat_bracket,ip).group(0)
+            return cidrize(ip_result)
 
-            elif re.search(pat_thirdoctet_wildcard,ip) is not None:
-                ip_result = re.search(pat_thirdoctet_wildcard,ip).group(0)
-                cidrizedarray = thirdoctet(ip_result)
-                return cidrizedarray
+        elif re.search(pat_thirdoctet_wildcard,ip) is not None:
+            ip_result = re.search(pat_thirdoctet_wildcard,ip).group(0)
+            cidrizedarray = thirdoctet(ip_result)
+            return cidrizedarray
 
-            elif re.search(pat_thirdoctet,ip) is not None:
-                ip_result = re.search(pat_thirdoctet,ip).group(0)
-                cidrizedarray = thirdoctet(ip_result)
-                return cidrizedarray
+        elif re.search(pat_thirdoctet,ip) is not None:
+            ip_result = re.search(pat_thirdoctet,ip).group(0)
+            cidrizedarray = thirdoctet(ip_result)
+            return cidrizedarray
 
-            elif re.search(pat_wildcard,ip) is not None:
-                ip_result = re.search(pat_wildcard,ip).group(0)
-                cidrizedarray = cidrize(ip_result)
-                return cidrizedarray
+        elif re.search(pat_wildcard,ip) is not None:
+            ip_result = re.search(pat_wildcard,ip).group(0)
+            cidrizedarray = cidrize(ip_result)
+            return cidrizedarray
 
-            elif re.search(pat_two_brackets,ip) is not None:
-                cidrizedarray = two_brackets(re.search(pat_two_brackets,ip).group(0))
-                return cidrizedarray
+        elif re.search(pat_two_brackets,ip) is not None:
+            cidrizedarray = two_brackets(re.search(pat_two_brackets,ip).group(0))
+            return cidrizedarray
 
-            elif re.search(pat_fourthoctet,ip) is not None:
-                ip_result = re.search(pat_fourthoctet,ip).group(0)
-                cidrizedarray = cidrize(ip_result)
-                return cidrizedarray
+        elif re.search(pat_fourthoctet,ip) is not None:
+            ip_result = re.search(pat_fourthoctet,ip).group(0)
+            cidrizedarray = cidrize(ip_result)
+            return cidrizedarray
 
-            elif re.search(pat_squarebrackets,ip) is not None:
-                ip_result = re.search(pat_squarebrackets,ip).group(0)
-                cidrizedarray = cidrize(ip_result)
-                return cidrizedarray
+        elif re.search(pat_squarebrackets,ip) is not None:
+            ip_result = re.search(pat_squarebrackets,ip).group(0)
+            cidrizedarray = cidrize(ip_result)
+            return cidrizedarray
 
-            elif re.search(pat_squarebrackets_fourth,ip) is not None:
-                ip_result = re.search(pat_squarebrackets_fourth,ip).group(0)
-                cidrizedarray = cidrize(ip_result)
-                return cidrizedarray
+        elif re.search(pat_squarebrackets_fourth,ip) is not None:
+            ip_result = re.search(pat_squarebrackets_fourth,ip).group(0)
+            cidrizedarray = cidrize(ip_result)
+            return cidrizedarray
 
-            elif re.search(pat_simple,ip) is not None:
-                ip_result = re.search(pat_simple,ip).group(0)
-                cidrizedarray = cidrize(ip_result)
-                return cidrizedarray
+        elif re.search(pat_simple,ip) is not None:
+            ip_result = re.search(pat_simple,ip).group(0)
+            cidrizedarray = cidrize(ip_result)
+            return cidrizedarray
 
-            else:
-                # doesn't fit into any defined form. Must be a typo somewhere.
-                return "fail"
-        except CidrizeError as e:
+        else:
+            # doesn't fit into any defined form. Must be a typo somewhere.
             return "fail"
-    return None
+    except CidrizeError as e:
+        return "fail"
 
 
 def screen(rawvalue): # digest the rawvalue of row
