@@ -177,9 +177,6 @@ def screen(rawvalue): # digest the rawvalue of row
             cidrizedip = categorise(ip)
             if cidrizedip == "fail":
                 badones.append(ip)
-        except CidrizeError as e:
-            # failsafe
-            badones.append(ip)
 
         if type(cidrizedip) == list:
             for i in cidrizedip:
@@ -190,6 +187,9 @@ def screen(rawvalue): # digest the rawvalue of row
             continue
         else:
             cidrizedarray.append(cidrizedip)
+        except CidrizeError as e:
+            # failsafe
+            badones.append(ip)
     return cidrizedarray
 
 def process(sheet): # process each row
