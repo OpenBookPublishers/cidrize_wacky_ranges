@@ -61,9 +61,9 @@ reps = {"to":"-","and":"&", \
         u"\uFE58":"-", \
         u"\uFE63":"-", \
         u"\uFF0D":"-", \
-        
+
         };
-    
+
 
 def thirdoctet(ip_result):
     prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"),ip_result).group(0);
@@ -78,7 +78,7 @@ def thirdoctet(ip_result):
     else:
         startip = prefix + "." + first  + suffix;
         endip = prefix + "." + second  + suffix;
-        
+
     result_list = iprange_to_cidrs(startip,endip);
     return result_list;
 
@@ -86,17 +86,17 @@ def two_brackets(ip_result):
     prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"),ip_result).group(0);
     third_octet = re.findall("\d{1,3}-\d{1,3}",ip_result)[0];
     fourth_octet = re.findall("\d{1,3}-\d{1,3}",ip_result)[1];
-    
+
     third_octet_first = third_octet.split("-")[0];
     third_octet_second = third_octet.split("-")[1];
 
     fourth_octet_first = fourth_octet.split("-")[0];
     fourth_octet_second = fourth_octet.split("-")[1];
 
-    
+
     startip = prefix + "." + third_octet_first + "." + fourth_octet_first;
     endip = prefix + "." + third_octet_second + "." + fourth_octet_second;
-    
+
     result_list = iprange_to_cidrs(startip,endip);
     return result_list;
 
@@ -104,7 +104,7 @@ def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","");
     if re.search(pat_privateip,ip) is None:
             try:
-                
+
                 if re.search(pat_hyphen,ip) is not None:
                     result = re.search(pat_hyphen,ip).group(0);
                     ip_split = result.split("-");
@@ -112,27 +112,27 @@ def categorise(ip): # categorise individual ips
                     endip = ip_split[1];
                     cidrizedarray = iprange_to_cidrs(startip,endip);
                     return cidrizedarray;
-        
+
                 elif re.search(pat_bracket,ip) is not None:
                     ip_result = re.search(pat_bracket,ip).group(0);
                     return cidrize(ip_result);
-       
+
                 elif re.search(pat_thirdoctet_wildcard,ip) is not None:
                     ip_result = re.search(pat_thirdoctet_wildcard,ip).group(0);
                     cidrizedarray = thirdoctet(ip_result);
                     return cidrizedarray;
-                
+
                 elif re.search(pat_thirdoctet,ip) is not None:
                     ip_result = re.search(pat_thirdoctet,ip).group(0);
                     cidrizedarray = thirdoctet(ip_result);
                     return cidrizedarray;
-                
+
                 elif re.search(pat_wildcard,ip) is not None:
                     ip_result = re.search(pat_wildcard,ip).group(0);
                     cidrizedarray = cidrize(ip_result);
                     return cidrizedarray;
-                
-                
+
+
                 elif re.search(pat_two_brackets,ip) is not None:
                     cidrizedarray = two_brackets(re.search(pat_two_brackets,ip).group(0));
                     return cidrizedarray;
@@ -161,12 +161,12 @@ def categorise(ip): # categorise individual ips
                     # doesn't fit into any defined form. Must be a typo somewhere.
                     return "fail";
             except CidrizeError as e:
-                return "fail"; 
+                return "fail";
     return None;
-    
+
 
 def screen(rawvalue): # digest the rawvalue of row
-    
+
     rawvalue = replace_all(rawvalue,reps);
     ss = [x.strip() for x in re.split('[,;&]',rawvalue)]; # Remove whitespace and produce an array of (hopefully) readable IP Addresses.
     cidrizedarray = [];
@@ -179,7 +179,7 @@ def screen(rawvalue): # digest the rawvalue of row
         if cidrizedip == "fail":
             #cidrizedip = human_input(ip,rawvalue);
             badones.append(ip);
-        
+
         if type(cidrizedip) == list:
             for i in cidrizedip:
                 if i == None or i is u'':
@@ -208,12 +208,12 @@ def human_input(ip,rawvalue):
             cidrizedip = human_input(ip,rawinput);
         else:
             return cidrizedip;
-            
-        
-    
-        
-    return network;   
-    
+
+
+
+
+    return network;
+
 
 def process(sheet): # process each row
     for i in range(1,sheet.max_row+1):
@@ -228,14 +228,14 @@ def process(sheet): # process each row
         print ip;
 
     print "There are %d bad ips need fixing." %(len(badones));
-            
 
-                     
-                       
-                    
-                
 
-'''                    
+
+
+
+
+
+'''
 # Preprocessing
 def run():
     _,inputf,outputf = sys.argv
@@ -251,7 +251,3 @@ wb = load_workbook("ip-ranges.xlsx");
 sheet = wb.get_sheet_by_name("Sheet1");
 process(sheet);
 wb.save("ip-ranges-edited.xlsx")
-
-
-
-
