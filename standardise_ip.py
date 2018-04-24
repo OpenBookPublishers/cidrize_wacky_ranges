@@ -130,6 +130,9 @@ def two_brackets(ip_result):
 
     return iprange_to_cidrs(startip, endip)
 
+class CategorisationError(Exception):
+    pass
+
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
 
@@ -178,7 +181,7 @@ def categorise(ip): # categorise individual ips
 
     else:
         # doesn't fit into any defined form. Must be a typo somewhere.
-        return "fail"
+        raise CategorisationError
 
 def screen(rawvalue):
     """Digest the rawvalue of row."""
@@ -223,8 +226,13 @@ def screen(rawvalue):
                 cidrizedarray.append(i)
 
         except CidrizeError as e:
-            # failsafe
             badones.append(ip)
+        except CategorisationError as e:
+            badones.append(ip)
+        except:
+            print >>sys.stderr, "Unhandled exception in screen()!"
+            raise
+
     return cidrizedarray
 
 def process(sheet): # process each row
