@@ -111,8 +111,7 @@ def thirdoctet(ip_result):
         startip = prefix + "." + first  + suffix
         endip = prefix + "." + second  + suffix
 
-    result_list = iprange_to_cidrs(startip, endip)
-    return result_list
+    return iprange_to_cidrs(startip, endip)
 
 def two_brackets(ip_result):
     prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"), ip_result).group(0)
@@ -129,8 +128,7 @@ def two_brackets(ip_result):
     startip = prefix + "." + third_octet_first + "." + fourth_octet_first
     endip = prefix + "." + third_octet_second + "." + fourth_octet_second
 
-    result_list = iprange_to_cidrs(startip, endip)
-    return result_list
+    return iprange_to_cidrs(startip, endip)
 
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
