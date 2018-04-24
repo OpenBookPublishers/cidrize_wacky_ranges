@@ -45,6 +45,8 @@ pat_squarebrackets_fourth = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\[\d{1,4}]");
 
 # Dictionary of stuff to replace. For standardising.
 def replace_all(text, dic):
+    assert type(text) == type(u"")
+
     for i, j in dic.iteritems():
         text = text.replace(i, j)
     return text
@@ -166,8 +168,10 @@ def categorise(ip): # categorise individual ips
         return "fail"
 
 def screen(rawvalue): # digest the rawvalue of row
-
-    rawvalue = replace_all(rawvalue, reps)
+    if(type(rawvalue)) == type(1L):
+        rawvalue = replace_all(unicode(rawvalue), reps)
+    else:
+        rawvalue = replace_all(rawvalue, reps)
 
     # Remove whitespace and produce an array of (hopefully) readable
     # IP Addresses.
