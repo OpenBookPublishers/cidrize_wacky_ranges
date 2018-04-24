@@ -213,10 +213,6 @@ def screen(rawvalue):
         try:
             cidrizedip = categorise(ip)
 
-            if type(cidrizedip) != type([]):
-                cidrizedarray.append(cidrizedip)
-                continue
-
             for i in cidrizedip:
                 if i == None or i is u'':
                     continue
