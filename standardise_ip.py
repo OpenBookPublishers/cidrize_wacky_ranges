@@ -110,7 +110,7 @@ def two_brackets(ip_result):
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
     if re.search(pat_privateip, ip) is not None:
-        return None
+        return []
 
     if re.search(pat_hyphen, ip) is not None:
         result = re.search(pat_hyphen, ip).group(0)
@@ -200,15 +200,15 @@ def screen(rawvalue):
                 badones.append(ip)
                 continue
 
-            if type(cidrizedip) == list:
-                for i in cidrizedip:
-                    if i == None or i is u'':
-                        continue
-                    cidrizedarray.append(i)
-            elif cidrizedip == None or cidrizedip is u'' :
-                continue
-            else:
+            if type(cidrizedip) != type([]):
                 cidrizedarray.append(cidrizedip)
+                continue
+
+            for i in cidrizedip:
+                if i == None or i is u'':
+                    continue
+                cidrizedarray.append(i)
+
         except CidrizeError as e:
             # failsafe
             badones.append(ip)
