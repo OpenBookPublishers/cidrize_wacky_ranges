@@ -266,6 +266,7 @@ def run():
     wb = load_workbook(inputf)
     sheet = wb["Sheet1"]
     process(sheet)
+    wb.save(outputf)
 
 if __name__ == "__main__":
     run()
