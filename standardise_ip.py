@@ -143,40 +143,50 @@ def categorise(ip): # categorise individual ips
     if re.search(pat_privateip, ip) is not None:
         return []
 
-    if re.search(pat_hyphen, ip) is not None:
-        result = re.search(pat_hyphen, ip).group(0)
+    matched = re.search(pat_hyphen, ip)
+    if matched is not None:
+        result = matched.group(0)
         ip_split = result.split("-")
         startip = ip_split[0]
         endip = ip_split[1]
         return iprange_to_cidrs(startip, endip)
 
-    elif re.search(pat_bracket, ip) is not None:
+    matched = re.search(pat_bracket, ip)
+    if matched is not None:
         return cidrize_whole_match(pat_bracket)
 
-    elif re.search(pat_thirdoctet_wildcard, ip) is not None:
-        ip_result = re.search(pat_thirdoctet_wildcard, ip).group(0)
+    matched = re.search(pat_thirdoctet_wildcard, ip)
+    if matched is not None:
+        ip_result = matched.group(0)
         return thirdoctet(ip_result)
 
-    elif re.search(pat_thirdoctet, ip) is not None:
-        ip_result = re.search(pat_thirdoctet, ip).group(0)
+    matched = re.search(pat_thirdoctet, ip)
+    if matched is not None:
+        ip_result = matched.group(0)
         return thirdoctet(ip_result)
 
-    elif re.search(pat_wildcard, ip) is not None:
+    matched = re.search(pat_wildcard, ip)
+    if matched is not None:
         return cidrize_whole_match(pat_wildcard)
 
-    elif re.search(pat_two_brackets, ip) is not None:
-        return two_brackets(re.search(pat_two_brackets, ip).group(0))
+    matched = re.search(pat_two_brackets, ip)
+    if matched is not None:
+        return two_brackets(matched.group(0))
 
-    elif re.search(pat_fourthoctet, ip) is not None:
+    matched = re.search(pat_fourthoctet, ip)
+    if matched is not None:
         return cidrize_whole_match(pat_fourthoctet)
 
-    elif re.search(pat_squarebrackets, ip) is not None:
+    matched = re.search(pat_squarebrackets, ip)
+    if matched is not None:
         return cidrize_whole_match(pat_squarebrackets)
 
-    elif re.search(pat_squarebrackets_fourth, ip) is not None:
+    matched = re.search(pat_squarebrackets_fourth, ip)
+    if matched is not None:
         return cidrize_whole_match(pat_squarebrackets_fourth)
 
-    elif re.search(pat_simple, ip) is not None:
+    matched = re.search(pat_simple, ip)
+    if matched is not None:
         return cidrize_whole_match(pat_simple)
 
     else:
