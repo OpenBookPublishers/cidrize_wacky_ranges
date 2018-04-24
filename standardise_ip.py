@@ -176,7 +176,6 @@ def screen(rawvalue): # digest the rawvalue of row
 
         # failsafe
         if cidrizedip == "fail":
-            #cidrizedip = human_input(ip,rawvalue)
             badones.append(ip)
 
         if type(cidrizedip) == list:
@@ -189,30 +188,6 @@ def screen(rawvalue): # digest the rawvalue of row
         else:
             cidrizedarray.append(cidrizedip)
     return cidrizedarray
-
-def human_input(ip,rawvalue):
-    # Last resort, ask a user to verify ip address and correct it.
-    # Returns none if ip can't be recognised by user, the cidrized ip if ip is corrected.
-    print "I can't process %s. \n It's from %s \n Please correct it. (type i to ignore): " %(ip,rawvalue)
-    rawinput = raw_input("")
-    if rawinput == "i":
-        return None
-    rawinput = replace_all(rawinput,reps)
-    ss = [x.strip() for x in re.split('[,;&]',rawinput)]
-    for ip in ss:
-        if ip is None or ip is u'':
-            continue
-        cidrizedip = categorise(ip)
-        if cidrizedip == "fail":
-            cidrizedip = human_input(ip,rawinput)
-        else:
-            return cidrizedip
-
-
-
-
-    return network
-
 
 def process(sheet): # process each row
     for i in range(1,sheet.max_row+1):
