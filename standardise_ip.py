@@ -171,6 +171,8 @@ def screen(rawvalue): # digest the rawvalue of row
 
         try:
             cidrizedip = categorise(ip)
+            if cidrizedip == "fail":
+                badones.append(ip)
         except CidrizeError as e:
             # failsafe
             badones.append(ip)
