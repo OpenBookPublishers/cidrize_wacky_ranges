@@ -212,9 +212,6 @@ def screen(rawvalue):
 
         try:
             cidrizedip = categorise(ip)
-            if cidrizedip == "fail":
-                badones.append(ip)
-                continue
 
             if type(cidrizedip) != type([]):
                 cidrizedarray.append(cidrizedip)
