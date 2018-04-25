@@ -39,3 +39,6 @@ def run():
             }
         JSON_Objects.append(JSON_Object)
     json.dump(JSON_Objects,open("data.json","wb"))
+    
+if __name__ == __main__:
+    run()
