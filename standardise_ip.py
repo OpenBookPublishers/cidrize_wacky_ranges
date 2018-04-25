@@ -229,7 +229,7 @@ def run():
     _, inputf, outputf, sheetname, columnnumber = sys.argv
     wb = load_workbook(inputf)
     sheet = wb[sheetname]
-    process(sheet, columnnumber)
+    process(sheet, int(columnnumber))
     wb.save(outputf)
 
 if __name__ == "__main__":
