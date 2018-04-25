@@ -237,9 +237,9 @@ def process(sheet, columnnumber):
 
             yield (row_id, rawvalue, cidrized)
 
-    dictionary_of_rows_ips = {}
+    
     for row_id, rawvalue, cidrized in processed_cell_values():
-        dictionary_of_rows_ips[row_id] = map(str,cidrized)
+    dictionary_of_rows_ips = dict([ (row_id, map(str,cidrized) for row_id, rawvalue,cidrized in processed_cell_values() ) ])
     return dictionary_of_rows_ips
         
 
