@@ -211,11 +211,11 @@ def screen(rawvalue):
 
 def process(sheet,columnnumber): # process each row
     for i in range(1, sheet.max_row+1):
-        if(sheet.cell(column = columnnumber, row = i).value) is not None:
+        if(sheet.cell(column=columnnumber, row=i).value) is not None:
             rawvalue = sheet.cell(column=columnnumber, row=i).value
             cidrized = screen(rawvalue)
             print >> sys.stderr, "Processed row %d" %(i)
-            sheet.cell(column =columnnumber+1, row=i).value = str(cidrized)
+            sheet.cell(column=columnnumber+1, row=i).value = str(cidrized)
             goodones.append(cidrized)
 
     for ip in badones:
@@ -228,7 +228,7 @@ def run():
     _, inputf, outputf, sheetname, columnnumber = sys.argv
     wb = load_workbook(inputf)
     sheet = wb[sheetname]
-    process(sheet,columnnumber)
+    process(sheet, columnnumber)
     wb.save(outputf)
 
 if __name__ == "__main__":
