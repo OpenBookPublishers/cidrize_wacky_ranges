@@ -1,7 +1,5 @@
 #!/usr/bin/env python2
 
-# standardise_ip.py
-
 # standardise-ip, by Chuan Tan <ct538@cam.ac.uk>
 #
 # Copyright (C) Chuan Tan 2018
@@ -95,7 +93,7 @@ reps = {
     u"\uFF0D": "-",
 }
 
-def thirdoctet(ip_result):
+def third_octet(ip_result):
     prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"), ip_result).group(0)
     suffix = re.split(re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}"),
                       ip_result)[1]
@@ -138,15 +136,34 @@ def empty_list(anything):
 class CategorisationError(Exception):
     pass
 
-def categorise_individual_ip(ip): # categorise individual ips
+def categorise_individual_ip(ip):
+    '''
+    Take an individual IP address range expression `ip' and attempt to
+    extract the net ranges from it.
+
+    Return type: a list of netaddr.ip.IPNetwork's
+
+    Example input: "41.220.19.209-41.220.19.222"
+
+    which should have return value:
+
+      [IPNetwork('41.220.19.209/32'),
+       IPNetwork('41.220.19.210/31'),
+       IPNetwork('41.220.19.212/30'),
+       IPNetwork('41.220.19.216/30'),
+       IPNetwork('41.220.19.220/31'),
+       IPNetwork('41.220.19.222/32')]
+
+    If `ip' doesn't match any known pattern, then throw CategorisationError.
+    '''
     ip = ip.replace(" ","")
 
     pattern_handlers = [
         (pat_privateip, empty_list),
         (pat_hyphen, handle_hyphenated_range),
         (pat_bracket, cidrize),
-        (pat_thirdoctet_wildcard, thirdoctet),
-        (pat_thirdoctet, thirdoctet),
+        (pat_thirdoctet_wildcard, third_octet),
+        (pat_thirdoctet, third_octet),
         (pat_wildcard, cidrize),
         (pat_two_brackets, two_brackets),
         (pat_fourthoctet, cidrize),
