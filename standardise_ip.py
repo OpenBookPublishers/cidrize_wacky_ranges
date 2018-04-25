@@ -210,14 +210,18 @@ def screen(rawvalue):
     return cidrizedarray
 
 def process(sheet, columnnumber):
+    def cell_values():
+        for i in range(1, sheet.max_row + 1):
+            cell_value = sheet.cell(column=columnnumber, row=i).value
+            if cell_value is not None:
+                yield (i, cell_value)
+
     # process each row
-    for i in range(1, sheet.max_row + 1):
-        if(sheet.cell(column=columnnumber, row=i).value) is not None:
-            rawvalue = sheet.cell(column=columnnumber, row=i).value
-            cidrized = screen(rawvalue)
-            print >> sys.stderr, "Processed row %d" %(i)
-            sheet.cell(column=columnnumber+1, row=i).value = str(cidrized)
-            goodones.append(cidrized)
+    for i, rawvalue in cell_values():
+        cidrized = screen(rawvalue)
+        print >> sys.stderr, "Processed row %d" %(i)
+        sheet.cell(column=columnnumber+1, row=i).value = str(cidrized)
+        goodones.append(cidrized)
 
     for ip in badones:
         print ip
