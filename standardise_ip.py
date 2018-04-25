@@ -10,7 +10,7 @@
 # it under the terms of the Apache Licence, version 2.0.
 
 # Reads from excel spreadsheet and converts them into IPNetwork, then outputs them
-# usage: standardise_ip [inputfile] [outputfile]
+# usage: standardise_ip [inputfile] [sheetname] [columnnumber]
 # You can easily check if an IPAddress is in IPNetwork by using
 # If IPAddress in IPNetwork:
 #           do whatever
