@@ -139,7 +139,25 @@ def empty_list(anything):
 class CategorisationError(Exception):
     pass
 
-def categorise_individual_ip(ip): # categorise individual ips
+def categorise_individual_ip(ip):
+    '''
+    Take an individual IP address range expression and attempt to
+    extract the net ranges from it.
+
+    Return type: a list of netaddr.ip.IPNetwork's
+
+    Example input: "41.220.19.209-41.220.19.222"
+
+    which should have return value:
+
+      [IPNetwork('41.220.19.209/32'),
+       IPNetwork('41.220.19.210/31'),
+       IPNetwork('41.220.19.212/30'),
+       IPNetwork('41.220.19.216/30'),
+       IPNetwork('41.220.19.220/31'),
+       IPNetwork('41.220.19.222/32')]
+
+    '''
     ip = ip.replace(" ","")
 
     pattern_handlers = [
