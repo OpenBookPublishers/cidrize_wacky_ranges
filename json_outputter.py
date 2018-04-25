@@ -2,12 +2,14 @@
 
 # json_outputter.py
 
-# json-outputter, by Chuan Tan <ct538@cam.ac.uk>
+# json_outputter, by Chuan Tan <ct538@cam.ac.uk>
 #
 # Copyright (C) Chuan Tan 2018
 #
 # This programme is free software; you may redistribute and/or modify
 # it under the terms of the Apache Licence, version 2.0.
+
+# Usage: json_outputter.py [inputfile] [sheetname] [institution_col_id] [country_col_id] [contact_col_id] [ip_col_id]
 
 # Reads an excel file, and processes the IP addresses using standardise-ip.
 # It then packages the each row into a JSON object, and ouputs a list of these JSON Objects.
