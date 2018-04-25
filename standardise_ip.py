@@ -23,9 +23,8 @@ import re
 import sys
 
 # Global variables
-badones =[]; # Weeding out the bad IP addresses
-goodones = []; # Just for record purposes
-
+BAD = 0
+GOOD = 1
 
 # Patterns
 
@@ -201,22 +200,20 @@ def screen(rawvalue):
 
         try:
             cidrizedip = categorise(ip)
-
             for i in cidrizedip:
                 if not valid(i):
                     continue
-                cidrizedarray.append(i)
+                yield GOOD, i
 
         except CidrizeError as e:
-            badones.append(ip)
+            yield BAD, ip
         except CategorisationError as e:
-            badones.append(ip)
+            yield BAD, ip
         except:
             print >>sys.stderr, "Unhandled exception in screen()!"
             raise
 
-    return cidrizedarray
-
+bad_count = 0
 def process(sheet, columnnumber):
     def cell_values():
         for row_id in range(1, sheet.max_row + 1):
@@ -225,20 +222,25 @@ def process(sheet, columnnumber):
                 yield (row_id, cell_value)
 
     def processed_cell_values():
+        global bad_count
+
         # process each row
         for row_id, rawvalue in cell_values():
-            cidrized = screen(rawvalue)
-            print >> sys.stderr, "Processed row %d" %(row_id)
+            cidrized = []
+            print >> sys.stderr, "Processed row %d" % (row_id)
+            for status, result in screen(rawvalue):
+                if status == GOOD:
+                    cidrized.append(result)
+                else:
+                    print result
+                    bad_count += 1
+
             yield (row_id, rawvalue, cidrized)
 
     for row_id, rawvalue, cidrized in processed_cell_values():
         sheet.cell(column=columnnumber+1, row=row_id).value = str(cidrized)
-        goodones.append(cidrized)
 
-    for ip in badones:
-        print ip
-
-    print "There are %d bad ips need fixing." %(len(badones))
+    print "There are %d bad ips need fixing." % bad_count
 
 # run()
 def run():
