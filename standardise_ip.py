@@ -209,8 +209,8 @@ def screen(rawvalue):
 
     return cidrizedarray
 
-def process(sheet,columnnumber): # process each row
-    for i in range(1, sheet.max_row+1):
+def process(sheet, columnnumber): # process each row
+    for i in range(1, sheet.max_row + 1):
         if(sheet.cell(column=columnnumber, row=i).value) is not None:
             rawvalue = sheet.cell(column=columnnumber, row=i).value
             cidrized = screen(rawvalue)
