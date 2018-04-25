@@ -96,7 +96,7 @@ reps = {
     u"\uFF0D": "-",
 }
 
-def thirdoctet(ip_result):
+def third_octet(ip_result):
     prefix = re.search(re.compile("\d{1,3}\.\d{1,3}"), ip_result).group(0)
     suffix = re.split(re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}-\d{1,3}"),
                       ip_result)[1]
@@ -165,8 +165,8 @@ def categorise_individual_ip(ip):
         (pat_privateip, empty_list),
         (pat_hyphen, handle_hyphenated_range),
         (pat_bracket, cidrize),
-        (pat_thirdoctet_wildcard, thirdoctet),
-        (pat_thirdoctet, thirdoctet),
+        (pat_thirdoctet_wildcard, third_octet),
+        (pat_thirdoctet, third_octet),
         (pat_wildcard, cidrize),
         (pat_two_brackets, two_brackets),
         (pat_fourthoctet, cidrize),
