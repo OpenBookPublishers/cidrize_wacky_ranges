@@ -1,7 +1,5 @@
 #!/usr/bin/env python2
 
-# standardise_ip.py
-
 # standardise-ip, by Chuan Tan <ct538@cam.ac.uk>
 #
 # Copyright (C) Chuan Tan 2018
@@ -9,8 +7,11 @@
 # This programme is free software; you may redistribute and/or modify
 # it under the terms of the Apache Licence, version 2.0.
 
-# Reads from excel spreadsheet and converts them into IPNetwork, then outputs them
-# usage: standardise_ip [inputfile] [outputfile]
+# Reads from excel spreadsheet and converts them into IPNetwork,
+# then outputs them
+
+# Usage: standardise_ip inputfile outputfile sheetname columnnumber
+
 # You can easily check if an IPAddress is in IPNetwork by using
 # If IPAddress in IPNetwork:
 #           do whatever
