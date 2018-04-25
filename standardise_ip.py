@@ -239,7 +239,6 @@ def process(sheet, columnnumber):
 
     dictionary_of_rows_ips = {}
     for row_id, rawvalue, cidrized in processed_cell_values():
-        #sheet.cell(column=columnnumber+1, row=row_id).value = str(cidrized)
         dictionary_of_rows_ips[row_id] = map(str,cidrized)
     return dictionary_of_rows_ips
         
