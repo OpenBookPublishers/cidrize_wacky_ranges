@@ -239,10 +239,11 @@ def process(sheet, columnnumber):
 
     
     dictionary_of_rows_ips = dict([ (row_id, map(str,cidrized)) for row_id, rawvalue,cidrized in processed_cell_values()  ])
+    print "There are %d bad ips need fixing." % bad_count
     return dictionary_of_rows_ips
         
 
-    print "There are %d bad ips need fixing." % bad_count
+    
 
 # run()
 def run():
