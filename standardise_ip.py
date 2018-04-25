@@ -216,10 +216,14 @@ def process(sheet, columnnumber):
             if cell_value is not None:
                 yield (row_id, cell_value)
 
-    # process each row
-    for row_id, rawvalue in cell_values():
-        cidrized = screen(rawvalue)
-        print >> sys.stderr, "Processed row %d" %(row_id)
+    def processed_cell_values():
+        # process each row
+        for row_id, rawvalue in cell_values():
+            cidrized = screen(rawvalue)
+            print >> sys.stderr, "Processed row %d" %(row_id)
+            yield (row_id, rawvalue, cidrized)
+
+    for row_id, rawvalue, cidrized in processed_cell_values():
         sheet.cell(column=columnnumber+1, row=row_id).value = str(cidrized)
         goodones.append(cidrized)
 
