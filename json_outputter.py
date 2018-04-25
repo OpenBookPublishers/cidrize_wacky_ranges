@@ -26,4 +26,14 @@ def run():
     wb = load_workbook(inputf)
     sheet = wb[sheetname]
     row_ids_ip_range = standardise_ip.process(sheet,int(ip_col_id))
+    JSON_Objects = []
+    for row_id in row_ids_ip_range:
+        JSON_Object = {
+            "Institution" : sheet.cell(column=int(institution_col_id), row = int(row_id)).value,
+            "Country" : sheet.cell(column=int(country_col_id), row = int(row_id)).value,
+            "Contact" : sheet.cell(column=int(contact_col_id), row = int(row_id)).value,
+            "IP-Range" : row_ids_ip_range[row_id]
+            }
+        JSON_Objects.append(JSON_Object)
+    print(JSON_Objects)
     
