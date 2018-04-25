@@ -23,9 +23,8 @@ import re
 import sys
 
 # Global variables
-badones =[]; # Weeding out the bad IP addresses
-goodones = []; # Just for record purposes
-
+BAD = 0
+GOOD = 1
 
 # Patterns
 
@@ -124,11 +123,17 @@ def two_brackets(ip_result):
     fourth_octet_first = fourth_octet.split("-")[0]
     fourth_octet_second = fourth_octet.split("-")[1]
 
-
     startip = prefix + "." + third_octet_first + "." + fourth_octet_first
     endip = prefix + "." + third_octet_second + "." + fourth_octet_second
 
     return iprange_to_cidrs(startip, endip)
+
+def handle_hyphenated_range(ip_result):
+    startip, endip = ip_result.split("-")
+    return iprange_to_cidrs(startip, endip)
+
+def empty_list(anything):
+    return []
 
 class CategorisationError(Exception):
     pass
@@ -136,54 +141,29 @@ class CategorisationError(Exception):
 def categorise(ip): # categorise individual ips
     ip = ip.replace(" ","")
 
-    def cidrize_whole_match(pattern):
-        ip_result = re.search(pattern, ip).group(0)
-        return cidrize(ip_result)
+    pattern_handlers = [
+        (pat_privateip, empty_list),
+        (pat_hyphen, handle_hyphenated_range),
+        (pat_bracket, cidrize),
+        (pat_thirdoctet_wildcard, thirdoctet),
+        (pat_thirdoctet, thirdoctet),
+        (pat_wildcard, cidrize),
+        (pat_two_brackets, two_brackets),
+        (pat_fourthoctet, cidrize),
+        (pat_squarebrackets, cidrize),
+        (pat_squarebrackets_fourth, cidrize),
+        (pat_simple, cidrize)
+    ]
 
-    if re.search(pat_privateip, ip) is not None:
-        return []
+    for pattern, handler in pattern_handlers:
+        matched = re.search(pattern, ip)
+        if matched is not None:
+            return handler(matched.group(0))
 
-    if re.search(pat_hyphen, ip) is not None:
-        result = re.search(pat_hyphen, ip).group(0)
-        ip_split = result.split("-")
-        startip = ip_split[0]
-        endip = ip_split[1]
-        return iprange_to_cidrs(startip, endip)
+    # doesn't fit into any defined form. Must be a typo somewhere.
+    raise CategorisationError
 
-    elif re.search(pat_bracket, ip) is not None:
-        return cidrize_whole_match(pat_bracket)
-
-    elif re.search(pat_thirdoctet_wildcard, ip) is not None:
-        ip_result = re.search(pat_thirdoctet_wildcard, ip).group(0)
-        return thirdoctet(ip_result)
-
-    elif re.search(pat_thirdoctet, ip) is not None:
-        ip_result = re.search(pat_thirdoctet, ip).group(0)
-        return thirdoctet(ip_result)
-
-    elif re.search(pat_wildcard, ip) is not None:
-        return cidrize_whole_match(pat_wildcard)
-
-    elif re.search(pat_two_brackets, ip) is not None:
-        return two_brackets(re.search(pat_two_brackets, ip).group(0))
-
-    elif re.search(pat_fourthoctet, ip) is not None:
-        return cidrize_whole_match(pat_fourthoctet)
-
-    elif re.search(pat_squarebrackets, ip) is not None:
-        return cidrize_whole_match(pat_squarebrackets)
-
-    elif re.search(pat_squarebrackets_fourth, ip) is not None:
-        return cidrize_whole_match(pat_squarebrackets_fourth)
-
-    elif re.search(pat_simple, ip) is not None:
-        return cidrize_whole_match(pat_simple)
-
-    else:
-        # doesn't fit into any defined form. Must be a typo somewhere.
-        raise CategorisationError
-
-def screen(rawvalue):
+def digest_row(rawvalue):
     """Digest the rawvalue of row."""
 
     def add_dots(s):
@@ -206,48 +186,68 @@ def screen(rawvalue):
     ss = [x.strip() for x in re.split('[,;&]', rawvalue)]
 
     cidrizedarray = []
+
+    def valid(i):
+        if i is None:
+            return False
+        if i == u'':
+            return False
+        return True
+
     for ip in ss:
         if ip is None or ip is u'':
             continue
 
         try:
             cidrizedip = categorise(ip)
-
             for i in cidrizedip:
-                if i == None or i is u'':
+                if not valid(i):
                     continue
-                cidrizedarray.append(i)
+                yield GOOD, i
 
         except CidrizeError as e:
-            badones.append(ip)
+            yield BAD, ip
         except CategorisationError as e:
-            badones.append(ip)
+            yield BAD, ip
         except:
-            print >>sys.stderr, "Unhandled exception in screen()!"
+            print >>sys.stderr, "Unhandled exception in digest_row()!"
             raise
 
-    return cidrizedarray
+bad_count = 0
+def process(sheet, columnnumber):
+    def cell_values():
+        for row_id in range(1, sheet.max_row + 1):
+            cell_value = sheet.cell(column=columnnumber, row=row_id).value
+            if cell_value is not None:
+                yield (row_id, cell_value)
 
-def process(sheet): # process each row
-    for i in range(1, sheet.max_row+1):
-        if(sheet.cell(column = 1, row = i).value) is not None:
-            rawvalue = sheet.cell(column=1, row=i).value
-            cidrized = screen(rawvalue)
-            print >> sys.stderr, "Processed row %d" %(i)
-            sheet.cell(column =2, row=i).value = str(cidrized)
-            goodones.append(cidrized)
+    def processed_cell_values():
+        global bad_count
 
-    for ip in badones:
-        print ip
+        # process each row
+        for row_id, rawvalue in cell_values():
+            cidrized = []
+            print >> sys.stderr, "Processed row %d" % (row_id)
+            for status, result in digest_row(rawvalue):
+                if status == GOOD:
+                    cidrized.append(result)
+                else:
+                    print result
+                    bad_count += 1
 
-    print "There are %d bad ips need fixing." %(len(badones))
+            yield (row_id, rawvalue, cidrized)
 
-# Preprocessing
+    for row_id, rawvalue, cidrized in processed_cell_values():
+        sheet.cell(column=columnnumber+1, row=row_id).value = str(cidrized)
+
+    print "There are %d bad ips need fixing." % bad_count
+
+# run()
 def run():
-    _, inputf, outputf = sys.argv
+    _, inputf, outputf, sheetname, columnnumber = sys.argv
     wb = load_workbook(inputf)
-    sheet = wb["Sheet1"]
-    process(sheet)
+    sheet = wb[sheetname]
+    process(sheet, int(columnnumber))
     wb.save(outputf)
 
 if __name__ == "__main__":
