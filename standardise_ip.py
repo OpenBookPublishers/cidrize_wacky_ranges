@@ -209,13 +209,13 @@ def screen(rawvalue):
 
     return cidrizedarray
 
-def process(sheet): # process each row
+def process(sheet,columnnumber): # process each row
     for i in range(1, sheet.max_row+1):
-        if(sheet.cell(column = 1, row = i).value) is not None:
-            rawvalue = sheet.cell(column=1, row=i).value
+        if(sheet.cell(column = columnnumber, row = i).value) is not None:
+            rawvalue = sheet.cell(column=columnnumber, row=i).value
             cidrized = screen(rawvalue)
             print >> sys.stderr, "Processed row %d" %(i)
-            sheet.cell(column =2, row=i).value = str(cidrized)
+            sheet.cell(column =columnnumber+1, row=i).value = str(cidrized)
             goodones.append(cidrized)
 
     for ip in badones:
@@ -223,12 +223,12 @@ def process(sheet): # process each row
 
     print "There are %d bad ips need fixing." %(len(badones))
 
-# Preprocessing
+# run()
 def run():
-    _, inputf, outputf = sys.argv
+    _, inputf, outputf, sheetname, columnnumber = sys.argv
     wb = load_workbook(inputf)
-    sheet = wb["Sheet1"]
-    process(sheet)
+    sheet = wb[sheetname]
+    process(sheet,columnnumber)
     wb.save(outputf)
 
 if __name__ == "__main__":
