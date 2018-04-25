@@ -138,7 +138,7 @@ def empty_list(anything):
 class CategorisationError(Exception):
     pass
 
-def categorise(ip): # categorise individual ips
+def categorise_individual_ip(ip): # categorise individual ips
     ip = ip.replace(" ","")
 
     pattern_handlers = [
@@ -199,7 +199,7 @@ def digest_row(rawvalue):
             continue
 
         try:
-            cidrizedip = categorise(ip)
+            cidrizedip = categorise_individual_ip(ip)
             for i in cidrizedip:
                 if not valid(i):
                     continue
