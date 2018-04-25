@@ -211,16 +211,16 @@ def screen(rawvalue):
 
 def process(sheet, columnnumber):
     def cell_values():
-        for i in range(1, sheet.max_row + 1):
-            cell_value = sheet.cell(column=columnnumber, row=i).value
+        for row_id in range(1, sheet.max_row + 1):
+            cell_value = sheet.cell(column=columnnumber, row=row_id).value
             if cell_value is not None:
-                yield (i, cell_value)
+                yield (row_id, cell_value)
 
     # process each row
-    for i, rawvalue in cell_values():
+    for row_id, rawvalue in cell_values():
         cidrized = screen(rawvalue)
-        print >> sys.stderr, "Processed row %d" %(i)
-        sheet.cell(column=columnnumber+1, row=i).value = str(cidrized)
+        print >> sys.stderr, "Processed row %d" %(row_id)
+        sheet.cell(column=columnnumber+1, row=row_id).value = str(cidrized)
         goodones.append(cidrized)
 
     for ip in badones:
