@@ -187,6 +187,14 @@ def screen(rawvalue):
     ss = [x.strip() for x in re.split('[,;&]', rawvalue)]
 
     cidrizedarray = []
+
+    def valid(i):
+        if i is None:
+            return False
+        if i == u'':
+            return False
+        return True
+
     for ip in ss:
         if ip is None or ip is u'':
             continue
@@ -195,7 +203,7 @@ def screen(rawvalue):
             cidrizedip = categorise(ip)
 
             for i in cidrizedip:
-                if i == None or i is u'':
+                if not valid(i):
                     continue
                 cidrizedarray.append(i)
 
