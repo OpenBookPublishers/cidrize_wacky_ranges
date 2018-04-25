@@ -20,6 +20,7 @@
 import sys
 from openpyxl import load_workbook
 import standardise_ip
+import json
 
 def run():
     _, inputf, sheetname, institution_col_id , country_col_id, contact_col_id, ip_col_id = sys.argv
@@ -35,5 +36,4 @@ def run():
             "IP-Range" : row_ids_ip_range[row_id]
             }
         JSON_Objects.append(JSON_Object)
-    print(JSON_Objects)
-    
+    json.dump(JSON_Objects,open("data.json","wb"))
