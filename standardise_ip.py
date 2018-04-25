@@ -257,18 +257,20 @@ def process(sheet, columnnumber):
 
             yield (row_id, rawvalue, cidrized)
 
+    dictionary_of_rows_ips = {}
     for row_id, rawvalue, cidrized in processed_cell_values():
-        sheet.cell(column=columnnumber+1, row=row_id).value = str(cidrized)
+        dictionary_of_rows_ips[row_id] = map(str,cidrized)
+    return dictionary_of_rows_ips
+        
 
     print "There are %d bad ips need fixing." % bad_count
 
 # run()
 def run():
-    _, inputf, outputf, sheetname, columnnumber = sys.argv
+    _, inputf, sheetname, columnnumber = sys.argv
     wb = load_workbook(inputf)
     sheet = wb[sheetname]
     process(sheet, int(columnnumber))
-    wb.save(outputf)
-
+  
 if __name__ == "__main__":
     run()
