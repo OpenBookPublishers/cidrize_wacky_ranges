@@ -141,7 +141,7 @@ class CategorisationError(Exception):
 
 def categorise_individual_ip(ip):
     '''
-    Take an individual IP address range expression and attempt to
+    Take an individual IP address range expression `ip' and attempt to
     extract the net ranges from it.
 
     Return type: a list of netaddr.ip.IPNetwork's
@@ -157,6 +157,7 @@ def categorise_individual_ip(ip):
        IPNetwork('41.220.19.220/31'),
        IPNetwork('41.220.19.222/32')]
 
+    If `ip' doesn't match any known pattern, then throw CategorisationError.
     '''
     ip = ip.replace(" ","")
 
