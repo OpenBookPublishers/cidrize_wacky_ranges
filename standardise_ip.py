@@ -163,7 +163,7 @@ def categorise(ip): # categorise individual ips
     # doesn't fit into any defined form. Must be a typo somewhere.
     raise CategorisationError
 
-def screen(rawvalue):
+def digest_row(rawvalue):
     """Digest the rawvalue of row."""
 
     def add_dots(s):
@@ -210,7 +210,7 @@ def screen(rawvalue):
         except CategorisationError as e:
             yield BAD, ip
         except:
-            print >>sys.stderr, "Unhandled exception in screen()!"
+            print >>sys.stderr, "Unhandled exception in digest_row()!"
             raise
 
 bad_count = 0
@@ -228,7 +228,7 @@ def process(sheet, columnnumber):
         for row_id, rawvalue in cell_values():
             cidrized = []
             print >> sys.stderr, "Processed row %d" % (row_id)
-            for status, result in screen(rawvalue):
+            for status, result in digest_row(rawvalue):
                 if status == GOOD:
                     cidrized.append(result)
                 else:
