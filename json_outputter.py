@@ -39,6 +39,6 @@ def run():
             }
         JSON_Objects.append(JSON_Object)
     print json.dumps(JSON_Objects)
-    
+
 if __name__ == "__main__":
     run()
