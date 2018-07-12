@@ -38,7 +38,7 @@ def run():
             "IP-Range" : row_ids_ip_range[row_id]
             }
         JSON_Objects.append(JSON_Object)
-    json.dump(JSON_Objects,open("data.json","wb"))
+    print json.dumps(JSON_Objects)
     
 if __name__ == "__main__":
     run()
