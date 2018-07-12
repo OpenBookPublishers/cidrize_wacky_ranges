@@ -24,8 +24,13 @@ from openpyxl import load_workbook
 import standardise_ip
 import json
 
-def run():
-    _, inputf, sheetname, institution_col_id , country_col_id, contact_col_id, ip_col_id = sys.argv
+SHNAME  = "Sheet1"
+INS_COL = 1
+COU_COL = 2
+CON_COL = 3
+IPR_COL = 4
+
+def process_file(inputf, sheetname, institution_col_id, country_col_id, contact_col_id, ip_col_id):
     wb = load_workbook(inputf)
     sheet = wb[sheetname]
     row_ids_ip_range = standardise_ip.process(sheet,int(ip_col_id))
@@ -38,7 +43,22 @@ def run():
             "IP-Range" : row_ids_ip_range[row_id]
             }
         JSON_Objects.append(JSON_Object)
-    json.dump(JSON_Objects,open("data.json","wb"))
-    
+    print json.dumps(JSON_Objects)
+
+def run():
+    if len(sys.argv) == 2:
+        _, inputf = sys.argv
+        sheetname = SHNAME
+        institution_col_id = INS_COL
+        country_col_id = COU_COL
+        contact_col_id = CON_COL
+        ip_col_id = IPR_COL
+    elif len(sys.argv) == 7:
+        _, inputf, sheetname, institution_col_id , country_col_id, contact_col_id, ip_col_id = sys.argv
+    else:
+        print >>sys.stderr, "Not enough arguments!"
+        sys.exit()
+    process_file(inputf, sheetname, institution_col_id , country_col_id, contact_col_id, ip_col_id)
+
 if __name__ == "__main__":
     run()
