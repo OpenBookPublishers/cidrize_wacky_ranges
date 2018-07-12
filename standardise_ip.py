@@ -244,19 +244,17 @@ def process(sheet, columnnumber):
         # process each row
         for row_id, rawvalue in cell_values():
             cidrized = []
-            print >> sys.stderr, "Processed row %d" % (row_id)
             for status, result in digest_row(rawvalue):
                 if status == GOOD:
                     cidrized.append(result)
                 else:
-                    print result
+                    print >> sys.stderr, result
                     bad_count += 1
 
             yield (row_id, rawvalue, cidrized)
 
     
     dictionary_of_rows_ips = dict([ (row_id, map(str,cidrized)) for row_id, rawvalue,cidrized in processed_cell_values() if cidrized  ])
-    print "There are %d bad ips need fixing." % bad_count
     return dictionary_of_rows_ips
         
 
