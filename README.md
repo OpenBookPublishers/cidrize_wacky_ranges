@@ -1,4 +1,4 @@
-# libraries_db
+# cidrize_wacky_ranges
 
 Contains two scripts, json_outputter.py and standardise_ip.py. 
 
