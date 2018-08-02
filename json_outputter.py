@@ -43,8 +43,8 @@ def process_file(inputf, sheetname, institution_col_id, country_col_id, institut
             "institution_name" : sheet.cell(column=int(institution_col_id), row = int(row_id)).value,
             "country_name" : sheet.cell(column=int(country_col_id), row = int(row_id)).value,
             "institution_notes": sheet.cell(column=int(institution_notes_col_id), row = int(row_id)).value,
-            "contacts" : {"contact_names" : sheet.cell(column=int(contact_col_id), row = int(row_id)).value,
-                          "contact_emails" : sheet.cell(column=int(contact_col_id)+1, row = int(row_id)).value},
+            "contacts" : [{"contact_name" : sheet.cell(column=int(contact_col_id), row = int(row_id)).value,
+                          "contact_email_address" : sheet.cell(column=int(contact_col_id)+1, row = int(row_id)).value}],
             "ip_ranges" : row_ids_ip_range[row_id]
             }
         JSON_Objects.append(JSON_Object)
